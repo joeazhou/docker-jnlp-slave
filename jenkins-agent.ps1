@@ -28,7 +28,8 @@ Param(
 	$Name = '',
 	$Tunnel = '',
 	$WorkDir = 'C:/Users/jenkins/Agent',
-	$JavaHome = $env:JAVA_HOME
+	$JavaHome = $env:JAVA_HOME,
+	$disableHttpsCertValidation = ' -disableHttpsCertValidation',
 )
 
 # Usage jenkins-agent.ps1 [options] -Url http://jenkins -Secret [SECRET] -Name [AGENT_NAME]
@@ -114,5 +115,5 @@ if(![System.String]::IsNullOrWhiteSpace($Cmd)) {
 
 	#TODO: Handle the case when the command-line and Environment variable contain different values.
 	#It is fine it blows up for now since it should lead to an error anyway.
-	Start-Process -FilePath $JAVA_BIN -Wait -NoNewWindow -ArgumentList $("$jnlpProtocolOpts -cp C:/ProgramData/Jenkins/agent.jar hudson.remoting.jnlp.Main -headless$Tunnel$Url$WorkDir$Secret $Name")
+	Start-Process -FilePath $JAVA_BIN -Wait -NoNewWindow -ArgumentList $("$jnlpProtocolOpts -cp C:/ProgramData/Jenkins/agent.jar hudson.remoting.jnlp.Main -headless$disableHttpsCertValidation$Tunnel$Url$WorkDir$Secret $Name")
 }
